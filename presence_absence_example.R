@@ -87,7 +87,7 @@ rare_1<-ggplot() +
     axis.text = element_text(color = "black"),                    # Texto de los ejes en negro
     axis.title = element_text(color = "black")                    # Títulos de los ejes en negro
   )+ 
-  add_phylopic(dromaeo_pic,alpha = 1, x = 50, y = 90, height = 20) ##agregar sobra de dromaeosauridae
+  add_phylopic(dromaeo_pic,alpha = 1, x = 50, y = 90, height = 20) ##agregar sombra de dromaeosauridae
 rare_1 
 
 ##rarefaccion por coleccion 2
