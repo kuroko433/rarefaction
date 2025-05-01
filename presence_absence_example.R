@@ -1,7 +1,7 @@
 
 rm(list = ls())
 
-setwd("C:/Users/halex/OneDrive/Documentos/Programacion/R scripts/R Diversidad/rarefaction/rarefaction")
+setwd("tu_directorio_de_trabajo") ##paso opcional
 
 library(velociraptr) ##manejar datos de pbdb
 library(vegan) ##analisis ecologicos
@@ -9,7 +9,7 @@ library(dplyr) ##para manejar datos
 library(ggplot2) ##para graficar
 library(glue)
 library(iNEXT) ##analisis ecologicos
-library(rphylopic)
+library(rphylopic) ##poner imagenes de tu taxa en graficos
 ##### datos de dromaeosaurios ###########
 ## vamos a descargar datos de raptores (familia de dinosaurios)
 ## a nivel de Genero
