@@ -45,8 +45,10 @@ print("lo anterior quiere decir que faltan más de la mitad de generos de raptor
 ###rarefaccion por coleccion 1
 
 ##calculamos diversidad rarefaccionada por coleccion (presencia-ausencia de generos)
-dromaeo_rare<- specaccum(collections,method = "random", permutations = 500,
-                      ci=0.95)
+dromaeo_rare<- specaccum(collections, ##nuestra matriz de datos
+                         method = "random", ###muestreo aleatorio
+                         permutations = 500, ##numero de permutaciones
+                      ci=0.95) ##intervalo de confianza
 
 dromaeo_rare<-data.frame(rarefaction=dromaeo_rare$richness,
                          ci_lower=dromaeo_rare$richness-dromaeo_rare$sd,
