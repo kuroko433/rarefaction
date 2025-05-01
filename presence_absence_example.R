@@ -89,7 +89,7 @@ dromaeo_list <- list(dromaeo = t(collections))
 rare.2 <- iNEXT(dromaeo_list, 
              q = 0,  # Riqueza (q=0), Shannon (q=1), Simpson (q=2)
              datatype = "incidence_raw",  # Datos de presencia-ausencia
-             endpoint = 800,  # Máximo número de unidades de muestreo si eliges 
+             endpoint = 800,  # Máximo número de unidades de muestreo, 
                               # puedes poner un numero mayor a los que tienes 
                               # para extrapolar al futuro (en que momento la curva se va a estabilizar?)
              knots = 100,  # Número de puntos para la curva
