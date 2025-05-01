@@ -59,7 +59,7 @@ dromaeo_rare<-data.frame(rarefaction=dromaeo_rare$richness,
 
 ## obtener imagen desde phylopic para agregar al grafico
 dromaeo_id <- get_uuid("Dromaeosauridae")
-dromaeo_pic <- rphylopic::get_phylopic(dromaeo_id)
+dromaeo_pic <- get_phylopic(dromaeo_id)
 
 rare_1<-ggplot() +
   # Graficar el intervalo de confianza como un área sombreada
