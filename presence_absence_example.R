@@ -96,8 +96,13 @@ rare.2 <- iNEXT(dromaeo_list,
              se = TRUE,  # Calcular intervalos de confianza
              nboot = 500)  # Número de réplicas bootstrap
 
-ggiNEXT(rare.2, type = 1)  # Curva basada en tamaño de muestra
-ggiNEXT(rare.2, type = 3)  # Curva basada en cobertura
+ggiNEXT(rare.2, type = 1)+ # Curva basada en tamaño de muestra
+  labs(title = "",
+       y = "Rarefied Richness")
+ggiNEXT(rare.2, type = 3) + # Curva basada en cobertura
+  labs(title = "",
+       y = "Rarefied Richness") 
+
 ggiNEXT(rare.2, type = 2)  # Curva de completitud muestral
 
 
