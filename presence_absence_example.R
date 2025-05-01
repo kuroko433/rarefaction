@@ -9,6 +9,7 @@ library(dplyr) ##para manejar datos
 library(ggplot2) ##para graficar
 library(glue)
 library(iNEXT) ##analisis ecologicos
+library(rphylopic)
 ##### datos de dromaeosaurios ###########
 ## vamos a descargar datos de raptores (familia de dinosaurios)
 ## a nivel de Genero
@@ -33,13 +34,12 @@ print(ngenus)
 
 ## veamos la completitud de nuestro ensamble (aproximacion tipo presencia-ausencia por coleccion)
 
-specpool(collections)[[2]] ##basado en CHAO 2 abrian 47 generos totales para el Mioceno
+specpool(collections) ##basado en CHAO 2 abrian 118 generos totales
 
 print(glue("en total tenemos {specpool(collections)[1]} generos entre el jurasico y el cretacico,
            y una completitud de ensambles del {round((specpool(collections)[1]/specpool(collections)[2])*100,2)}%"))
 
-print("lo anterior quiere decir que faltan más de la mitad de generos de raptores
-      aun por encontrar")
+print("lo anterior quiere decir que faltan más de la mitad de generos de raptores aun por encontrar")
 
 
 ###rarefaccion por coleccion 1
@@ -56,6 +56,11 @@ dromaeo_rare<-data.frame(rarefaction=dromaeo_rare$richness,
                          sites=dromaeo_rare$sites)
 
 ##### graficar resultado de vegan
+
+## obtener imagen desde phylopic para agregar al grafico
+dromaeo_id <- get_uuid("Dromaeosauridae")
+dromaeo_pic <- rphylopic::get_phylopic(dromaeo_id)
+
 rare_1<-ggplot() +
   # Graficar el intervalo de confianza como un área sombreada
   geom_ribbon(data = dromaeo_rare, aes(x = sites, ymin = ci_lower, ymax = ci_upper), 
@@ -81,11 +86,12 @@ rare_1<-ggplot() +
     axis.ticks = element_line(color = "black"),                   # Marcas de los ejes visibles
     axis.text = element_text(color = "black"),                    # Texto de los ejes en negro
     axis.title = element_text(color = "black")                    # Títulos de los ejes en negro
-  )
-rare_1
+  )+ 
+  add_phylopic(dromaeo_pic,alpha = 1, x = 50, y = 90, height = 20) ##agregar sobra de dromaeosauridae
+rare_1 
 
 ##rarefaccion por coleccion 2
-dromaeo_list <- list(dromaeo = t(collections))
+dromaeo_list <- list(Dromaeosauridae = t(collections))
 
 
 rare.2 <- iNEXT(dromaeo_list, 
@@ -106,5 +112,33 @@ ggiNEXT(rare.2, type = 3) + # Curva basada en cobertura
        y = "Rarefied Richness") 
 
 ggiNEXT(rare.2, type = 2)  # Curva de completitud muestral
+
+
+# Calcular chao 2 con INEXT
+inext_chao<-ChaoRichness(dromaeo_list, datatype = "incidence_raw", conf = 0.95) ##mismo resultado de vegan
+
+##rarefaccion y chao2 usando INEXT
+ggiNEXT(rare.2, type = 1)+ # Curva basada en tamaño de muestra
+  labs(title = "",
+       x=  "Collections",
+       y = "Rarefied Richness")+
+  # Escala del eje X para incluir marcas en los extremos
+  scale_x_continuous(breaks = c(0,seq(800, 0, by = -100),800)) +
+  #Escala del eje Y para incluir marcas en los extremos
+  scale_y_continuous(breaks = c(0,seq(120, 0, by = -40),120)) +
+  ##agregar linea del valor de CHAO2
+  geom_hline(yintercept = inext_chao[[2]] , linetype = "solid", color = "red",linewidth=1)+
+  theme(
+    panel.background = element_rect(fill = "white", colour = NA), # Fondo blanco sin bordes
+    plot.background = element_rect(fill = "white", colour = NA),  # Fondo general blanco
+    panel.grid = element_blank(),                                 # Eliminar cuadrícula
+    axis.line = element_line(color = "black"),                    # Ejes X e Y como líneas negras
+    axis.ticks = element_line(color = "black"),                   # Marcas de los ejes visibles
+    axis.text = element_text(color = "black"),                    # Texto de los ejes en negro
+    axis.title = element_text(color = "black",),                  # Títulos de los ejes en negro
+    legend.position = "none"
+  )+ 
+  add_phylopic(dromaeo_pic,alpha = 1, x = 100, y = 90, height = 20) ##sombra de dromaeosauridae
+
 
 
